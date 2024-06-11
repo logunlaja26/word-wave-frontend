@@ -9,9 +9,9 @@ const firebaseConfig = {
   authDomain: "word-wave-app.firebaseapp.com",
   projectId: "word-wave-app",
   storageBucket: "word-wave-app.appspot.com",
-  messagingSenderId: "362869482472",
-  appId: "1:362869482472:web:63d07fa6a2b9c3c243ba5d",
-  measurementId: "G-8EZT8KQD0T",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: "",
 };
 let audioUrl;
 
