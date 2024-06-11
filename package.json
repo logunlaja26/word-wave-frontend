@@ -1,0 +1,20 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "@breezystack/lamejs": "^1.2.7",
+    "extendable-media-recorder": "^9.2.0",
+    "firebase": "^10.11.1",
+    "uuid": "^9.0.1"
+  }
+}

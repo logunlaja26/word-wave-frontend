@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speech to Text Converter</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  </head>
+  <!-- <body>
+    <i
+      class="fa fa-microphone"
+      id="record"
+      style="font-size: 48px; color: red"></i>
+    <audio id="audio" controls></audio>
+
+    <br />
+    <div id="spinner" style="display: none">
+      <i class="fa fa-spinner fa-spin" style="font-size: 48px; color: red"></i>
+    </div>
+    <br />
+    <button id="transcribe-btn" class="button-disabled">Transcribe</button>
+    <p id="text">Press the button and start speaking...</p>
+    <script type="module" src="./main.js"></script>
+  </body> -->
+
+  <body>
+    <i
+      class="fa fa-microphone"
+      id="record"
+      style="font-size: 48px; color: red"></i>
+
+    <button id="stopButton" disabled>Stop</button>
+    <button id="playButton" disabled>Play</button>
+    <!-- <audio id="audio" controls style="display: none"></audio> -->
+    <audio id="audio" controls></audio>
+
+    <br />
+    <div id="spinner" style="display: none">
+      <i class="fa fa-spinner fa-spin" style="font-size: 48px; color: red"></i>
+    </div>
+    <br />
+    <button id="transcribe-btn" class="button-disabled">Transcribe</button>
+    <button id="user-btn">ADD USER</button>
+
+    <div><p id="text">Press the button and start speaking...</p></div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
