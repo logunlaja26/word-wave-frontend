@@ -93,8 +93,15 @@ function stopRecordedAudio() {
   stopRecording();
 }
 
-function uploadAudio() {
-  uploadAudioToFirebase(audioBlob);
+function uploadAudioAndSaveData() {
+  uploadAudioToFirebase(audioBlob)
+    .then((audioUrl) => {
+      // Now that we have the audio URL, we can save the user data
+      saveUserData(audioUrl); // Pass the audioUrl to saveUserData if needed
+    })
+    .catch((error) => {
+      console.error("Error uploading audio or saving data:", error);
+    });
 }
 
 function toggleRecording() {
@@ -110,6 +117,6 @@ function toggleRecording() {
 record.addEventListener("click", toggleRecording);
 playButton.addEventListener("click", playRecordedAudio);
 stopButton.addEventListener("click", stopRecordedAudio);
-transcribeBtn.addEventListener("click", uploadAudio);
+transcribeBtn.addEventListener("click", uploadAudioAndSaveData);
 //user.addEventListener("click", addNewUser);
-user.addEventListener("click", saveUserData);
+//user.addEventListener("click", saveUserData);

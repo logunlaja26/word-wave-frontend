@@ -1,17 +1,18 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, updateDoc, setDoc, doc } from "firebase/firestore";
 import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
+import { FIREBASE_API_KEY } from "./apikey.js";
 import { uuidv4 } from "./main";
 import { ref } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "",
+  apiKey: FIREBASE_API_KEY,
   authDomain: "word-wave-app.firebaseapp.com",
   projectId: "word-wave-app",
   storageBucket: "word-wave-app.appspot.com",
-  messagingSenderId: "",
-  appId: "",
-  measurementId: "",
+  messagingSenderId: "362869482472",
+  appId: "1:362869482472:web:63d07fa6a2b9c3c243ba5d",
+  measurementId: "G-8EZT8KQD0T",
 };
 let audioUrl;
 
@@ -35,12 +36,12 @@ export function uploadAudioToFirebase(audioBlob) {
     type: "audio/mpeg",
   });
 
-  uploadBytes(storageRef, audioFile).then(async (snapshot) => {
+  // Return the promise chain here
+  return uploadBytes(storageRef, audioFile).then(async (snapshot) => {
     audioUrl = await getAudioUrl(snapshot);
-    console.log("Audio URL in upload function ", audioUrl);
-    console.log("uploading..");
-    console.log("type of audioURL... ", typeof audioUrl);
+    console.log("uploading audio to firebase..");
     sendUrlToServerAndTranscribe(audioUrl);
+    return audioUrl; // Resolve the promise with the audio URL
   });
 }
 
@@ -140,7 +141,7 @@ export async function linkAudioToNote(userId, noteId, audioPath) {
   }
 }
 
-export async function saveUserData() {
+export async function saveUserData(audioUrl) {
   addUpdateUser(userId, "testuser", "testuser@example.com");
   addUpdateNote(
     userId,
