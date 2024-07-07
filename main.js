@@ -1,8 +1,5 @@
 import { uploadAudioToFirebase, saveUserData } from "./firebase.js";
 
-// Generate a random UUID
-const random_uuid = uuidv4();
-
 export function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0,
@@ -12,12 +9,14 @@ export function uuidv4() {
 }
 
 const record = document.getElementById("record");
-const transcribeBtn = document.getElementById("transcribe-btn");
+//const transcribeBtn = document.getElementById("transcribe-btn");
+const transcribeBtn19 = document.getElementById("transcribe-btn-19");
 const spinner = document.getElementById("spinner");
 const stopButton = document.getElementById("stopButton");
 const playButton = document.getElementById("playButton");
 const audio = document.getElementById("audio");
 const user = document.getElementById("user-btn");
+const playPauseBtn = document.getElementById("playPauseBtn");
 
 let can_record = false;
 let isRecording = false;
@@ -59,12 +58,14 @@ function startRecording() {
   isRecording = true;
   recorder.start();
   console.log("recording has started....");
-  record.classList.replace("fa-microphone", "fa-stop-circle");
-  transcribeBtn.classList.add("button-disabled");
-  transcribeBtn.disabled = true; // Disable the button for interactions
+  record.classList.add("animate");
+  // transcribeBtn.classList.add("button-disabled");
+  // transcribeBtn.disabled = true; // Disable the button for interactions
+  transcribeBtn19.classList.add("button19-disabled");
+  transcribeBtn19.disabled = true; // Disable the button for interactions
   spinner.style.display = "block";
 
-  stopButton.disabled = false;
+  //stopButton.disabled = false;
   playButton.disabled = true;
 }
 
@@ -72,12 +73,14 @@ function stopRecording() {
   isRecording = false;
   recorder.stop();
   console.log("recording has stopped.....");
-  record.classList.replace("fa-stop-circle", "fa-microphone");
-  transcribeBtn.classList.remove("button-disabled");
-  transcribeBtn.disabled = false; // Enable the button for interactions
+  record.classList.remove("animate");
+  // transcribeBtn.classList.remove("button-disabled");
+  // transcribeBtn.disabled = false; // Enable the button for interactions
+  transcribeBtn19.classList.remove("button19-disabled");
+  transcribeBtn19.disabled = false; // Enable the button for interactions
   spinner.style.display = "none";
 
-  stopButton.disabled = true;
+  //stopButton.disabled = true;
   playButton.disabled = false;
 }
 
@@ -114,9 +117,29 @@ function toggleRecording() {
   }
 }
 
+function playpause() {
+  console.log(
+    "play attempt, current state:",
+    audio.paused ? "paused" : "playing"
+  );
+  if (audio.paused) {
+    audio.play();
+    playPauseBtn.innerHTML = '<i class="fa fa-pause"></i>';
+  } else {
+    audio.pause();
+    playPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
+  }
+}
+
 record.addEventListener("click", toggleRecording);
 playButton.addEventListener("click", playRecordedAudio);
-stopButton.addEventListener("click", stopRecordedAudio);
-transcribeBtn.addEventListener("click", uploadAudioAndSaveData);
+//stopButton.addEventListener("click", stopRecordedAudio);
+//transcribeBtn.addEventListener("click", uploadAudioAndSaveData);
+transcribeBtn19.addEventListener("click", uploadAudioAndSaveData);
 //user.addEventListener("click", addNewUser);
 //user.addEventListener("click", saveUserData);
+playPauseBtn.addEventListener("click", playpause);
+
+audio.addEventListener("ended", () => {
+  playPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
+});

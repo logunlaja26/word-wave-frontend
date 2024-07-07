@@ -31,18 +31,33 @@ const storageRef = ref(storage, `audio/${audioFilename}`);
 const audioListRef = ref(storage, "audio/");
 
 // Function to upload audio
-export function uploadAudioToFirebase(audioBlob) {
+export async function uploadAudioToFirebase(audioBlob) {
   const audioFile = new File([audioBlob], "audio.mp3", {
     type: "audio/mpeg",
   });
 
-  // Return the promise chain here
-  return uploadBytes(storageRef, audioFile).then(async (snapshot) => {
-    audioUrl = await getAudioUrl(snapshot);
+  try {
+    const snapshot = await uploadBytes(storageRef, audioFile);
+    const audioUrl = await getAudioUrl(snapshot);
     console.log("uploading audio to firebase..");
-    sendUrlToServerAndTranscribe(audioUrl);
-    return audioUrl; // Resolve the promise with the audio URL
-  });
+    const transcription = await sendUrlToServerAndTranscribe(audioUrl);
+    console.log("transcription details..", transcription);
+    const summary = await summarizeSegments(transcription);
+    console.log("Summary results ", summary);
+    await addUpdateNote(
+      userId,
+      noteId,
+      "Meeting Summary",
+      transcription, // Use the transcription as the content
+      summary,
+      "2024-06-11T10:00:00Z",
+      "2024-06-11T15:00:00Z"
+    );
+    return audioUrl;
+  } catch (error) {
+    console.error("Error in uploading audio or updating note:", error);
+    throw error; // Ensure errors are propagated
+  }
 }
 
 export async function getAudioUrl(snapshot) {
@@ -57,7 +72,7 @@ export async function getAudioUrl(snapshot) {
 }
 
 function sendUrlToServerAndTranscribe(url) {
-  fetch("http://localhost:8000/transcribe", {
+  return fetch("http://localhost:8000/transcribe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -70,15 +85,52 @@ function sendUrlToServerAndTranscribe(url) {
       console.log("spoken language..", data.language);
       console.log(
         "audio text transcription",
-        data.segments.map((segment, index) => segment.text)
+        data.segments.map(
+          (segment, index) => `${segment.speaker}: ${segment.text}`
+        )
       );
       document.getElementById("text").innerText = JSON.stringify(
-        data.segments.map((segment, index) => segment.text)
+        data.segments
+          .map((segment, index) => `${segment.speaker}: ${segment.text}`)
+          .join("\n")
       );
+      const transcription = data.segments
+        .map((segment) => `${segment.speaker}: ${segment.text}`)
+        .join("\n");
+
+      //summarizeSegments(transcription); // Call summarizeSegments without returning its result
+      return transcription; // Continue to return the transcription text
     })
     .catch((error) => {
-      console.error("Error:....", error);
+      console.error("Error: ", error);
+      throw error;
     });
+}
+
+// Adjusted summarizeSegments to accept a single string of all segments and return a string
+async function summarizeSegments(transcription) {
+  try {
+    const response = await fetch("http://localhost:8000/summarize", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        notes: transcription,
+      }),
+    });
+    const summary = await response.json();
+    console.log("Summary after api call: ", summary);
+    const summaryText = summary || "No result available";
+    document.getElementById("summary").innerText = JSON.stringify(summaryText);
+
+    console.log("current summaryText: ", summaryText);
+    document.getElementById("summary").innerText = JSON.stringify(summaryText);
+    return summaryText; // Return the summary text
+  } catch (error) {
+    console.error("Error summarizing: ", error);
+    return "Error in summarization"; // Return error message as string
+  }
 }
 
 const userId = "user-" + random_uuid;
@@ -106,6 +158,7 @@ export async function addUpdateNote(
   noteId,
   title,
   content,
+  summary,
   createdOn,
   lastModified
 ) {
@@ -116,6 +169,7 @@ export async function addUpdateNote(
       {
         title: title,
         content: content,
+        summary: summary,
         createdOn: createdOn,
         lastModified: lastModified,
         // audioBlobs: [],
@@ -143,13 +197,5 @@ export async function linkAudioToNote(userId, noteId, audioPath) {
 
 export async function saveUserData(audioUrl) {
   addUpdateUser(userId, "testuser", "testuser@example.com");
-  addUpdateNote(
-    userId,
-    noteId,
-    "Meeting Summary",
-    "Here's a detailed summary of the meeting held on...",
-    "2024-06-10T10:00:00Z",
-    "2024-06-10T15:00:00Z"
-  );
   linkAudioToNote(userId, noteId, audioUrl);
 }

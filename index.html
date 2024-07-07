@@ -9,44 +9,49 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
   </head>
-  <!-- <body>
-    <i
-      class="fa fa-microphone"
-      id="record"
-      style="font-size: 48px; color: red"></i>
-    <audio id="audio" controls></audio>
-
-    <br />
-    <div id="spinner" style="display: none">
-      <i class="fa fa-spinner fa-spin" style="font-size: 48px; color: red"></i>
-    </div>
-    <br />
-    <button id="transcribe-btn" class="button-disabled">Transcribe</button>
-    <p id="text">Press the button and start speaking...</p>
-    <script type="module" src="./main.js"></script>
-  </body> -->
-
   <body>
-    <i
-      class="fa fa-microphone"
-      id="record"
-      style="font-size: 48px; color: red"></i>
+    <header>
+      <h1>Speech to Text Converter</h1>
+    </header>
+    <main>
+      <div class="controls">
+        <i
+          class="fa fa-microphone microphone"
+          id="record"
+          style="font-size: 48px; color: red"></i>
+        <button id="playButton" class="button-19" role="button" disabled>
+          Play
+        </button>
+        <button id="stopButton" class="button-19" role="button">Stop</button>
 
-    <button id="stopButton" disabled>Stop</button>
-    <button id="playButton" disabled>Play</button>
-    <!-- <audio id="audio" controls style="display: none"></audio> -->
-    <audio id="audio" controls></audio>
-
-    <br />
-    <div id="spinner" style="display: none">
-      <i class="fa fa-spinner fa-spin" style="font-size: 48px; color: red"></i>
-    </div>
-    <br />
-    <button id="transcribe-btn" class="button-disabled">Transcribe</button>
-    <button id="user-btn">ADD USER</button>
-
-    <div><p id="text">Press the button and start speaking...</p></div>
-
+        <div id="audioPlayer" class="audio-player">
+          <audio id="audio" src=""></audio>
+          <button id="playPauseBtn" class="play-pause">
+            <i class="fa fa-play"></i>
+          </button>
+        </div>
+        <div id="spinner" style="display: none">
+          <i class="fa fa-spinner fa-spin spinner"></i>
+        </div>
+        <!-- <button id="transcribe-btn" class="button button-disabled">
+          Transcribe
+        </button> -->
+        <button
+          id="transcribe-btn-19"
+          role="button"
+          class="button-19 button19-disabled">
+          Transcribe
+        </button>
+        <button id="user-btn" class="button">ADD USER</button>
+        <!-- <button class="button-19" role="button">Button 19</button> -->
+      </div>
+      <div class="output">
+        <p id="text">Press the button and start speaking...</p>
+      </div>
+      <div class="output">
+        <p id="summary">Summary...</p>
+      </div>
+    </main>
     <script type="module" src="./main.js"></script>
   </body>
 </html>
