@@ -257,3 +257,60 @@ p {
   cursor: not-allowed;
   opacity: 0.5;
 }
+
+/* Sets the containers height and width */
+.base-timer {
+  position: relative;
+  height: 300px;
+  width: 300px;
+}
+
+/* Removes SVG styling that would hide the time label */
+.base-timer__circle {
+  fill: none;
+  stroke: none;
+}
+
+/* The SVG path that displays the timer's progress */
+.base-timer__path-elapsed {
+  stroke-width: 7px;
+  stroke: grey;
+}
+
+.base-timer__label {
+  position: absolute;
+
+  /* Size should match the parent container */
+  width: 300px;
+  height: 300px;
+
+  /* Keep the label aligned to the top */
+  top: 0;
+
+  /* Create a flexible box that centers content vertically and horizontally */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Sort of an arbitrary number; adjust to your liking */
+  font-size: 48px;
+}
+
+/* Animation  ring */
+
+.base-timer__path-remaining {
+  stroke-width: 7px;
+
+  stroke-linecap: round;
+
+  transform: rotate(90deg);
+  transform-origin: center;
+
+  transition: 1s linear all;
+
+  stroke: lightskyblue;
+}
+
+.base-timer__svg {
+  transform: scaleX(-1);
+}

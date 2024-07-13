@@ -14,7 +14,7 @@
       <h1>Speech to Text Converter</h1>
     </header>
     <main>
-      <div class="controls">
+      <div class="controls" id="controls-class">
         <i
           class="fa fa-microphone microphone"
           id="record"
@@ -23,6 +23,19 @@
           Play
         </button>
         <button id="stopButton" class="button-19" role="button">Stop</button>
+        <div class="base-timer" id="timer">
+          <svg
+            class="base-timer__svg"
+            viewBox="0 0 100 100"
+            xmlns="http://www.w3.org/2000/svg">
+            <g class="base-timer__circle">
+              <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45" />
+            </g>
+          </svg>
+          <span>
+            <!-- Remaining time label -->
+          </span>
+        </div>
 
         <div id="audioPlayer" class="audio-player">
           <audio id="audio" src=""></audio>
