@@ -1,9 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore, updateDoc, setDoc, doc } from "firebase/firestore";
 import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
-import { FIREBASE_API_KEY } from "./apikey.js";
-import { uuidv4 } from "./main";
+import { FIREBASE_API_KEY } from "../apikey.js";
+import { uuidv4 } from "./main.js";
 import { ref } from "firebase/storage";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
@@ -26,6 +27,9 @@ const storage = getStorage(app);
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
+
+// Initialize Firebase Authentication and get a reference to the service
+const auth = getAuth(app);
 
 const storageRef = ref(storage, `audio/${audioFilename}`);
 const audioListRef = ref(storage, "audio/");
@@ -199,3 +203,5 @@ export async function saveUserData(audioUrl) {
   addUpdateUser(userId, "testuser", "testuser@example.com");
   linkAudioToNote(userId, noteId, audioUrl);
 }
+
+//Authentication code

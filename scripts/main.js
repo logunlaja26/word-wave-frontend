@@ -250,3 +250,7 @@ playPauseBtn.addEventListener("click", playpause);
 audio.addEventListener("ended", () => {
   playPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
 });
+
+document.getElementById("logoutButton").addEventListener("click", function () {
+  window.location.href = "login.html";
+});
