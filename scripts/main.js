@@ -1,4 +1,5 @@
 import { uploadAudioToFirebase, saveUserData } from "./firebase.js";
+import { auth } from "./util.js";
 
 export function uuidv4() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
@@ -251,6 +252,10 @@ audio.addEventListener("ended", () => {
   playPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
 });
 
-document.getElementById("logoutButton").addEventListener("click", function () {
-  window.location.href = "login.html";
-});
+// document.getElementById("logoutButton").addEventListener("click", (e) => {
+//   e.preventDefault();
+//   auth.signOut().then(() => {
+//     console.log("user signed out");
+//   });
+//   window.location.href = "login.html";
+// });

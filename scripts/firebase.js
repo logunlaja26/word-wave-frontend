@@ -1,35 +1,13 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, updateDoc, setDoc, doc } from "firebase/firestore";
+import { updateDoc, setDoc, doc } from "firebase/firestore";
 import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
-import { FIREBASE_API_KEY } from "../apikey.js";
+import { app, db } from "./util.js";
 import { uuidv4 } from "./main.js";
 import { ref } from "firebase/storage";
-import { getAuth } from "firebase/auth";
-
-const firebaseConfig = {
-  apiKey: FIREBASE_API_KEY,
-  authDomain: "word-wave-app.firebaseapp.com",
-  projectId: "word-wave-app",
-  storageBucket: "word-wave-app.appspot.com",
-  messagingSenderId: "362869482472",
-  appId: "1:362869482472:web:63d07fa6a2b9c3c243ba5d",
-  measurementId: "G-8EZT8KQD0T",
-};
-let audioUrl;
-
 const random_uuid = uuidv4();
 const audioFilename = "audio-" + random_uuid + "-file.mp3";
 console.log(audioFilename);
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 
 const storage = getStorage(app);
-
-// Initialize Cloud Firestore and get a reference to the service
-const db = getFirestore(app);
-
-// Initialize Firebase Authentication and get a reference to the service
-const auth = getAuth(app);
 
 const storageRef = ref(storage, `audio/${audioFilename}`);
 const audioListRef = ref(storage, "audio/");
@@ -136,7 +114,7 @@ async function summarizeSegments(transcription) {
     return "Error in summarization"; // Return error message as string
   }
 }
-
+// change this ID for authentication of each user
 const userId = "user-" + random_uuid;
 const noteId = "note-" + random_uuid;
 export async function addUpdateUser(userId, username, email) {
@@ -203,5 +181,3 @@ export async function saveUserData(audioUrl) {
   addUpdateUser(userId, "testuser", "testuser@example.com");
   linkAudioToNote(userId, noteId, audioUrl);
 }
-
-//Authentication code
