@@ -1,7 +1,7 @@
 import { getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { FIREBASE_API_KEY } from "../apikey.js";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
@@ -21,5 +21,21 @@ const db = getFirestore(app);
 
 //Authentication
 const auth = getAuth(app);
+
+export let currentUserId = null;
+let currentUserEmail = null;
+onAuthStateChanged(auth, (user) => {
+  console.log(user);
+  if (user) {
+    currentUserId = user.uid;
+    currentUserEmail = user.email;
+    console.log("user ID  ", currentUserId);
+    console.log("user ID ", currentUserEmail);
+    const uid = user.uid;
+    console.log("user logged in", user);
+  } else {
+    console.log("user logged out", user);
+  }
+});
 
 export { app, auth, db };

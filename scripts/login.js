@@ -6,100 +6,119 @@ import {
   signOut,
 } from "firebase/auth";
 
-const login = document.getElementById("loginForm");
-const signup = document.getElementById("signupForm");
-const logout = document.getElementById("logoutButton");
+window.onload = function () {
+  const login = document.getElementById("loginForm");
+  const signup = document.getElementById("signupForm");
+  const logout = document.getElementById("logoutButton");
 
-// Sign Up Modal Logic
-var modal = document.getElementById("signupModal");
-var btn = document.getElementById("signupButton");
-var span = document.getElementsByClassName("close")[0];
+  // Debugging statements
+  console.log("loginForm:", login);
+  console.log("signupForm:", signup);
+  console.log("logoutButton:", logout);
 
-onAuthStateChanged(auth, (user) => {
-  console.log(user);
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/auth.user
-    const uid = user.uid;
-    console.log("user logged in", user);
-    // ...
-  } else {
-    console.log("user logged out", user);
-    // ...
+  if (!signup || !logout) {
+    console.error("One or more elements are not found in the DOM.");
+    return;
   }
-});
 
-login.addEventListener("submit", function (e) {
-  e.preventDefault();
-  // You can add real authentication here
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  // Sign Up Modal Logic
+  var modal = document.getElementById("signupModal");
+  var btn = document.getElementById("signupButton");
+  var span = document.getElementsByClassName("close")[0];
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then((cred) => {
-      // console.log(cred.user);
-    })
-    .catch(() => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+  onAuthStateChanged(auth, (user) => {
+    console.log(user);
+    if (user) {
+      let currentUserId = user.uid;
+      let currentUserEmail = user.email;
+      console.log("user ID in login email ", currentUserId);
+      console.log("user ID in login email ", currentUserEmail);
+      const uid = user.uid;
+      console.log("user logged in", user);
+    } else {
+      console.log("user logged out", user);
+    }
+  });
 
-  // if (username === "user" && password === "pass") {
-  //   window.location.href = "main.html";
-  // } else {
-  //   alert("Invalid credentials");
-  // }
-});
+  login.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-btn.onclick = function () {
-  modal.style.display = "block";
-};
+    signInWithEmailAndPassword(auth, email, password)
+      .then((cred) => {
+        // console.log(cred.user);
+        console.log("user ID in login page ", cred.uid);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  });
 
-span.onclick = function () {
-  modal.style.display = "none";
-};
+  btn.onclick = function () {
+    modal.style.display = "block";
+  };
 
-window.onclick = function (event) {
-  if (event.target == modal) {
+  span.onclick = function () {
     modal.style.display = "none";
-  }
-};
+  };
 
-// sign up the user
-signup.addEventListener("submit", function (e) {
-  e.preventDefault();
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
 
-  const newemail = document.getElementById("newuseremail").value;
-  const newpassword = document.getElementById("newpassword").value;
-
-  createUserWithEmailAndPassword(auth, newemail, newpassword)
-    .then((cred) => {
+  async function createNewUser(newemail, newpassword) {
+    try {
+      const cred = await createUserWithEmailAndPassword(
+        auth,
+        newemail,
+        newpassword
+      );
       console.log("firebase auth user credentials", cred);
       const userEmail = cred.user.email;
       console.log("firebase auth user email ", userEmail);
       const userId = cred.user.uid;
       console.log("firebase auth user id ", userId);
-      return userId;
-      // ...
-    })
-    .catch((error) => {
+      return { userId, userEmail };
+    } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      // ..
-    });
+      console.error("Error during sign-up: ", errorMessage);
+      throw error;
+    }
+  }
 
-  alert("Sign-up successful for " + newemail);
-  document.getElementById("newuseremail").value = "";
-  document.getElementById("newpassword").value = "";
-  modal.style.display = "none";
-});
+  const newUser = async function (e) {
+    e.preventDefault();
 
-// logout the user
-logout.addEventListener("click", (e) => {
-  e.preventDefault();
-  signOut(auth)
-    .then(() => {})
-    .catch((error) => {
+    const newemail = document.getElementById("newuseremail").value;
+    const newpassword = document.getElementById("newpassword").value;
+
+    try {
+      const { userId, userEmail } = await createNewUser(newemail, newpassword);
+    } catch (error) {
       console.log(error);
-    });
-});
+    }
+
+    alert("Sign-up successful for " + newemail);
+    document.getElementById("newuseremail").value = "";
+    document.getElementById("newpassword").value = "";
+    modal.style.display = "none";
+  };
+
+  // sign up the user
+  signup.addEventListener("submit", newUser);
+
+  // logout the user
+  logout.addEventListener("click", (e) => {
+    e.preventDefault();
+    signOut(auth)
+      .then(() => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+};

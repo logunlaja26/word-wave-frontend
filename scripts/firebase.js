@@ -1,16 +1,36 @@
 import { updateDoc, setDoc, doc } from "firebase/firestore";
 import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
-import { app, db } from "./util.js";
+import { onAuthStateChanged } from "firebase/auth";
+import { app, db, auth } from "./util.js";
 import { uuidv4 } from "./main.js";
 import { ref } from "firebase/storage";
+
 const random_uuid = uuidv4();
 const audioFilename = "audio-" + random_uuid + "-file.mp3";
 console.log(audioFilename);
+console.log("db instance ", db);
 
 const storage = getStorage(app);
 
 const storageRef = ref(storage, `audio/${audioFilename}`);
 const audioListRef = ref(storage, "audio/");
+
+export let currentUserId = null;
+let currentUserEmail = null;
+
+onAuthStateChanged(auth, (user) => {
+  console.log(user);
+  if (user) {
+    currentUserId = user.uid;
+    currentUserEmail = user.email;
+    console.log("user ID in firebase ", currentUserId);
+    console.log("Email in firebase ", currentUserEmail);
+    const uid = user.uid;
+    console.log("user logged in", user);
+  } else {
+    console.log("user logged out", user);
+  }
+});
 
 // Function to upload audio
 export async function uploadAudioToFirebase(audioBlob) {
@@ -27,7 +47,7 @@ export async function uploadAudioToFirebase(audioBlob) {
     const summary = await summarizeSegments(transcription);
     console.log("Summary results ", summary);
     await addUpdateNote(
-      userId,
+      currentUserId,
       noteId,
       "Meeting Summary",
       transcription, // Use the transcription as the content
@@ -114,8 +134,7 @@ async function summarizeSegments(transcription) {
     return "Error in summarization"; // Return error message as string
   }
 }
-// change this ID for authentication of each user
-const userId = "user-" + random_uuid;
+
 const noteId = "note-" + random_uuid;
 export async function addUpdateUser(userId, username, email) {
   try {
@@ -136,7 +155,7 @@ export async function addUpdateUser(userId, username, email) {
 }
 
 export async function addUpdateNote(
-  userId,
+  currentUserId,
   noteId,
   title,
   content,
@@ -144,7 +163,7 @@ export async function addUpdateNote(
   createdOn,
   lastModified
 ) {
-  const noteRef = doc(db, "Users", userId, "Notes", noteId);
+  const noteRef = doc(db, "Users", currentUserId, "Notes", noteId);
   try {
     await setDoc(
       noteRef,
@@ -158,7 +177,9 @@ export async function addUpdateNote(
       },
       { merge: true }
     );
-    console.log(`Note updated for ${noteId} under user ${userId}`);
+    console.log(
+      `Note updated for ${currentUserId} under user ${currentUserId}`
+    );
   } catch (error) {
     console.error("Error updating note: ", error);
   }
@@ -178,6 +199,6 @@ export async function linkAudioToNote(userId, noteId, audioPath) {
 }
 
 export async function saveUserData(audioUrl) {
-  addUpdateUser(userId, "testuser", "testuser@example.com");
-  linkAudioToNote(userId, noteId, audioUrl);
+  await addUpdateUser(currentUserId, currentUserEmail, currentUserEmail);
+  await linkAudioToNote(currentUserId, noteId, audioUrl);
 }

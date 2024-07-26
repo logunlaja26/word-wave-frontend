@@ -1,5 +1,25 @@
 import { collection, query, limit, getDocs } from "firebase/firestore";
-import { db } from "./util.js";
+import { onAuthStateChanged } from "firebase/auth";
+import { db, auth } from "./util.js";
+
+let currentUserId = null;
+let currentUserEmail = null;
+onAuthStateChanged(auth, (user) => {
+  console.log("user in notes page", user);
+  if (user) {
+    currentUserId = user.uid;
+    currentUserEmail = user.email;
+    console.log("user ID in notes page  ", currentUserId);
+    console.log("user ID in notes page", currentUserEmail);
+
+    console.log("user logged in", user);
+    fetchNotes(currentUserId);
+  } else {
+    console.log("user logged out", user);
+  }
+});
+
+console.log("notes user ID", currentUserId);
 
 // Function to fetch and display notes
 export async function fetchNotes(userId) {
@@ -25,9 +45,3 @@ export async function fetchNotes(userId) {
     console.error("Error fetching notes: ", error);
   }
 }
-
-// // Fetch notes on page load for a specific user
-window.onload = () => {
-  const userId = "testUserId"; // Replace with the actual user ID
-  fetchNotes(userId);
-};

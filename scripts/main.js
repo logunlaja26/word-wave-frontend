@@ -80,8 +80,6 @@ function startRecording() {
   startTimer();
   console.log("recording has started....");
   record.classList.add("animate");
-  // transcribeBtn.classList.add("button-disabled");
-  // transcribeBtn.disabled = true; // Disable the button for interactions
   transcribeBtn19.classList.add("button19-disabled");
   transcribeBtn19.disabled = true; // Disable the button for interactions
   spinner.style.display = "block";
@@ -100,8 +98,6 @@ function stopRecording() {
   setCircleDasharray(); // Reset the circle dasharray
   console.log("recording has stopped.....");
   record.classList.remove("animate");
-  // transcribeBtn.classList.remove("button-disabled");
-  // transcribeBtn.disabled = false; // Enable the button for interactions
   transcribeBtn19.classList.remove("button19-disabled");
   transcribeBtn19.disabled = false; // Enable the button for interactions
   spinner.style.display = "none";
@@ -241,21 +237,9 @@ controls.innerHTML = `
 
 record.addEventListener("click", toggleRecording);
 playButton.addEventListener("click", playRecordedAudio);
-//stopButton.addEventListener("click", stopRecordedAudio);
-//transcribeBtn.addEventListener("click", uploadAudioAndSaveData);
 transcribeBtn19.addEventListener("click", uploadAudioAndSaveData);
-//user.addEventListener("click", addNewUser);
-//user.addEventListener("click", saveUserData);
 playPauseBtn.addEventListener("click", playpause);
 
 audio.addEventListener("ended", () => {
   playPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
 });
-
-// document.getElementById("logoutButton").addEventListener("click", (e) => {
-//   e.preventDefault();
-//   auth.signOut().then(() => {
-//     console.log("user signed out");
-//   });
-//   window.location.href = "login.html";
-// });
