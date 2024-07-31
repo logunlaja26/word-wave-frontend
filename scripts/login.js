@@ -33,9 +33,14 @@ window.onload = function () {
       let currentUserEmail = user.email;
       console.log("user ID in login email ", currentUserId);
       console.log("user ID in login email ", currentUserEmail);
-      const uid = user.uid;
+      // User is signed in, show main content
+      document.getElementById("login-container").style.display = "none";
+      document.getElementById("main-content").style.display = "block";
       console.log("user logged in", user);
     } else {
+      // No user is signed in, show login form
+      document.getElementById("login-container").style.display = "block";
+      document.getElementById("main-content").style.display = "none";
       console.log("user logged out", user);
     }
   });
@@ -49,6 +54,10 @@ window.onload = function () {
       .then((cred) => {
         // console.log(cred.user);
         console.log("user ID in login page ", cred.uid);
+        // Hide login form and show main content
+        document.getElementById("login-container").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+        // history.pushState(null, null, "/main-content");
       })
       .catch((error) => {
         const errorCode = error.code;

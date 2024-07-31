@@ -1,4 +1,5 @@
 import { uploadAudioToFirebase, saveUserData } from "./firebase.js";
+import { signOut } from "firebase/auth";
 import { auth } from "./util.js";
 
 export function uuidv4() {
@@ -19,6 +20,7 @@ const audio = document.getElementById("audio");
 const user = document.getElementById("user-btn");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const controls = document.getElementById("timer");
+const logout = document.getElementById("logout-btn");
 
 let can_record = false;
 let isRecording = false;
@@ -242,4 +244,20 @@ playPauseBtn.addEventListener("click", playpause);
 
 audio.addEventListener("ended", () => {
   playPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
+});
+
+document.getElementById("notes-btn").addEventListener("click", () => {
+  // Update the URL to /notes
+  history.pushState(null, null, "/notes");
+  window.location.href = "notes.html";
+});
+
+// logout the user
+logout.addEventListener("click", (e) => {
+  e.preventDefault();
+  signOut(auth)
+    .then(() => {})
+    .catch((error) => {
+      console.log(error);
+    });
 });

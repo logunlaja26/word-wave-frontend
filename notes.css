@@ -10,3 +10,14 @@
   width: calc(33% - 40px);
   box-sizing: border-box;
 }
+
+button {
+  padding: 15px 30px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: var(--button-bg-color);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
