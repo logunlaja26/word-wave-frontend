@@ -182,6 +182,11 @@ function startTimer() {
       formatTime(timeLeft);
 
     setCircleDasharray();
+
+    // Check if timeLeft is zero and stop recording if it is
+    if (timeLeft <= 0) {
+      stopRecording();
+    }
   }, 1000);
 }
 
