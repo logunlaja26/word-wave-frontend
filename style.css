@@ -101,7 +101,7 @@ p {
   overflow: auto;
 }
 
-.audio-player {
+/* .audio-player {
   position: relative;
   width: 150px;
   height: 150px;
@@ -111,9 +111,9 @@ p {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+} */
 
-.play-pause {
+/* .play-pause {
   background: var(--background-color);
   border: none;
   border-radius: 50%;
@@ -137,7 +137,7 @@ p {
 
 .play-pause:active {
   transform: scale(0.95);
-}
+} */
 
 @keyframes pulse {
   0% {

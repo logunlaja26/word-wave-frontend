@@ -37,8 +37,8 @@ export async function fetchNotes(userId) {
         noteElement.innerHTML = `
           <h3>${noteData.title}</h3>
           <p>${noteData.content}</p>
+          <p>${noteData.summary}</p>
           <small>Created on: ${noteData.createdOn}</small>
-          <small>Last modified: ${noteData.lastModified}</small>
         `;
         notesContainer.appendChild(noteElement);
       });

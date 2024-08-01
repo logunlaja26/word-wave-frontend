@@ -46,13 +46,16 @@ export async function uploadAudioToFirebase(audioBlob) {
     console.log("transcription details..", transcription);
     const summary = await summarizeSegments(transcription);
     console.log("Summary results ", summary);
+
+    const now = new Date().toLocaleString(); // Get current date and time in ISO format
+
     await addUpdateNote(
       currentUserId,
       noteId,
-      "Meeting Summary",
+      "Meeting Notes & Summary",
       transcription, // Use the transcription as the content
       summary,
-      "2024-06-11T10:00:00Z",
+      now,
       "2024-06-11T15:00:00Z"
     );
     return audioUrl;

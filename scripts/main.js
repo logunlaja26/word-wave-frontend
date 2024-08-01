@@ -18,7 +18,6 @@ const stopButton = document.getElementById("stopButton");
 const playButton = document.getElementById("playButton");
 const audio = document.getElementById("audio");
 const user = document.getElementById("user-btn");
-const playPauseBtn = document.getElementById("playPauseBtn");
 const controls = document.getElementById("timer");
 const logout = document.getElementById("logout-btn");
 
@@ -141,20 +140,6 @@ function toggleRecording() {
   }
 }
 
-function playpause() {
-  console.log(
-    "play attempt, current state:",
-    audio.paused ? "paused" : "playing"
-  );
-  if (audio.paused) {
-    audio.play();
-    playPauseBtn.innerHTML = '<i class="fa fa-pause"></i>';
-  } else {
-    audio.pause();
-    playPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
-  }
-}
-
 function formatTime(time) {
   // The largest round integer less than or equal to the result of time divided being by 60.
   const minutes = Math.floor(time / 60);
@@ -245,12 +230,6 @@ controls.innerHTML = `
 record.addEventListener("click", toggleRecording);
 playButton.addEventListener("click", playRecordedAudio);
 transcribeBtn19.addEventListener("click", uploadAudioAndSaveData);
-playPauseBtn.addEventListener("click", playpause);
-
-audio.addEventListener("ended", () => {
-  playPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
-});
-
 document.getElementById("notes-btn").addEventListener("click", () => {
   // Update the URL to /notes
   history.pushState(null, null, "/notes");
