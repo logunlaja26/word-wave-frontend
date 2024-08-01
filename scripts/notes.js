@@ -1,5 +1,5 @@
 import { collection, query, onSnapshot } from "firebase/firestore";
-import { onAuthStateChanged } from "firocsebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "./util.js";
 
 let currentUserId = null;
