@@ -20,6 +20,7 @@ const audio = document.getElementById("audio");
 const user = document.getElementById("user-btn");
 const controls = document.getElementById("timer");
 const logout = document.getElementById("logout-btn");
+const contact = document.getElementById("contact-btn");
 
 let can_record = false;
 let isRecording = false;
@@ -119,7 +120,12 @@ function stopRecordedAudio() {
   stopRecording();
 }
 
+export const newNoteId = "note-" + uuidv4(); // Generate a new note ID
+
 function uploadAudioAndSaveData() {
+  transcribeBtn19.disabled = true; // Disable the button to prevent multiple clicks
+  transcribeBtn19.classList.add("button19-disabled");
+  //const newNoteId = "note-" + uuidv4(); // Generate a new note ID
   uploadAudioToFirebase(audioBlob)
     .then((audioUrl) => {
       // Now that we have the audio URL, we can save the user data
@@ -127,6 +133,13 @@ function uploadAudioAndSaveData() {
     })
     .catch((error) => {
       console.error("Error uploading audio or saving data:", error);
+    })
+    .finally(() => {
+      transcribeBtn19.disabled = false; // Re-enable the button after the response is received
+      transcribeBtn19.classList.remove("button19-disabled");
+      audioBlob = null; // Clear the audio content
+      chunks = []; // Clear the recorded chunks
+      audio.src = ""; // Clear the audio element source
     });
 }
 
@@ -234,6 +247,12 @@ document.getElementById("notes-btn").addEventListener("click", () => {
   // Update the URL to /notes
   history.pushState(null, null, "/notes");
   window.location.href = "notes.html";
+});
+
+document.getElementById("contact-btn").addEventListener("click", () => {
+  // Update the URL to /notes
+  history.pushState(null, null, "/contact");
+  window.location.href = "contact.html";
 });
 
 // logout the user

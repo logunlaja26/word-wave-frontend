@@ -50,7 +50,7 @@ export async function fetchNotes(userId) {
 }
 
 document.getElementById("back-to-main-btn").addEventListener("click", () => {
-  // Update the URL to /main-content
-  history.pushState(null, null, "/main-content");
+  // Update the URL to /main
+  history.pushState(null, null, "/main");
   window.location.href = "index.html";
 });

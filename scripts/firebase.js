@@ -2,11 +2,12 @@ import { updateDoc, setDoc, doc } from "firebase/firestore";
 import { getStorage, uploadBytes, getDownloadURL } from "firebase/storage";
 import { onAuthStateChanged } from "firebase/auth";
 import { app, db, auth } from "./util.js";
-import { uuidv4 } from "./main.js";
+import { uuidv4, newNoteId as noteId } from "./main.js";
 import { ref } from "firebase/storage";
 
 const random_uuid = uuidv4();
-const audioFilename = "audio-" + random_uuid + "-file.mp3";
+const audioFilename = "audio-" + uuidv4() + "-file.mp3";
+//const noteId = "note-" + uuidv4();
 console.log(audioFilename);
 console.log("db instance ", db);
 
@@ -84,16 +85,18 @@ function sendUrlToServerAndTranscribe(url) {
     },
     body: JSON.stringify({ url: url }),
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((data) => {
+          console.log("data error message...", data);
+          throw new Error(data.message || "Transcription failed");
+        });
+      }
+      return response.json();
+    })
     .then((data) => {
-      console.log("Success:...", data);
+      console.log("Response...", data);
       console.log("spoken language..", data.language);
-      console.log(
-        "audio text transcription",
-        data.segments.map(
-          (segment, index) => `${segment.speaker}: ${segment.text}`
-        )
-      );
       document.getElementById("text").innerText = JSON.stringify(
         data.segments
           .map((segment, index) => `${segment.speaker}: ${segment.text}`)
@@ -103,11 +106,11 @@ function sendUrlToServerAndTranscribe(url) {
         .map((segment) => `${segment.speaker}: ${segment.text}`)
         .join("\n");
 
-      //summarizeSegments(transcription); // Call summarizeSegments without returning its result
-      return transcription; // Continue to return the transcription text
+      return transcription;
     })
     .catch((error) => {
       console.error("Error: ", error);
+      document.getElementById("text").innerText = `Error: ${error.message}`;
       throw error;
     });
 }
@@ -138,7 +141,7 @@ async function summarizeSegments(transcription) {
   }
 }
 
-const noteId = "note-" + random_uuid;
+//const noteId = "note-" + uuidv4(); // Generate a new note ID
 export async function addUpdateUser(userId, username, email) {
   try {
     await setDoc(
@@ -176,7 +179,6 @@ export async function addUpdateNote(
         summary: summary,
         createdOn: createdOn,
         lastModified: lastModified,
-        // audioBlobs: [],
       },
       { merge: true }
     );

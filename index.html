@@ -38,10 +38,12 @@
       </div>
     </div>
 
-    <main id="main-content" style="display: none">
+    <main id="main" style="display: none">
       <div class="controls" id="controls-class">
         <button id="notes-btn" class="button">NOTES</button>
-        <button id="logout-btn" class="button">Logout</button>
+        <button id="logout-btn" class="button">LOGOUT</button>
+        <button id="contact-btn" class="button">CONTACT</button>
+        <button id="instructions-btn" class="button">INSTRUCTIONS</button>
         <i
           class="fa fa-microphone microphone"
           id="record"
@@ -72,15 +74,17 @@
         <button
           id="transcribe-btn-19"
           role="button"
-          class="button-19 button19-disabled">
+          class="button-19 button19-disabled" disabled>
           Transcribe
         </button>
       </div>
-      <div class="output">
-        <p id="text">Press the button and start speaking...</p>
-      </div>
-      <div class="output">
-        <p id="summary">Summary...</p>
+      <div class="output-container">
+        <div class="output">
+          <p id="text">Press the button and start speaking...</p>
+        </div>
+        <div class="output">
+          <p id="summary">Summary...</p>
+        </div>
       </div>
     </main>
 

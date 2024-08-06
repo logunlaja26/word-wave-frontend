@@ -1,0 +1,45 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us - Customer Support</title>
+    <link rel="stylesheet" href="contact.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Contact us</h1>
+      <div class="content">
+        <div class="info">
+          <p>
+            Need to get in touch with us? Either fill out the form with your
+            inquiry and we will get back to you as soon as possible.
+          </p>
+        </div>
+        <form
+          class="contact-form"
+          action="https://formspree.io/f/xnnavqvv"
+          method="POST">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First name*</label>
+              <input type="text" id="firstName" name="firstName" required />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last name*</label>
+              <input type="text" id="lastName" name="lastName" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email*</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="message">What can we help you with?</label>
+            <textarea id="message" name="message" rows="4"></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Submit</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

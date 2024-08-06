@@ -87,9 +87,23 @@ button:active:not(.button-disabled) {
   color: var(--primary-color);
 }
 
-.output {
-  margin-top: 20px;
+.output-container {
+  display: flex;
+  justify-content: space-between; /* Adjust spacing between the two outputs */
+  gap: 20px; /* Add a gap between the two outputs if needed */
   width: 100%;
+}
+
+.output {
+  flex: 1;
+}
+
+.output p {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  height: 250px;
+  overflow: auto;
 }
 
 p {
