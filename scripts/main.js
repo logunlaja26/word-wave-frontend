@@ -126,7 +126,9 @@ function uploadAudioAndSaveData() {
   transcribeBtn19.disabled = true; // Disable the button to prevent multiple clicks
   transcribeBtn19.classList.add("button19-disabled");
   //const newNoteId = "note-" + uuidv4(); // Generate a new note ID
-  uploadAudioToFirebase(audioBlob)
+  const audioFilename = "audio-" + uuidv4() + "-file.mp3";
+  console.log("audio file name..", audioFilename);
+  uploadAudioToFirebase(audioBlob, audioFilename)
     .then((audioUrl) => {
       // Now that we have the audio URL, we can save the user data
       saveUserData(audioUrl); // Pass the audioUrl to saveUserData if needed
@@ -135,12 +137,17 @@ function uploadAudioAndSaveData() {
       console.error("Error uploading audio or saving data:", error);
     })
     .finally(() => {
+      resetRecordingState(); // Reset the recording state
       transcribeBtn19.disabled = false; // Re-enable the button after the response is received
       transcribeBtn19.classList.remove("button19-disabled");
-      audioBlob = null; // Clear the audio content
-      chunks = []; // Clear the recorded chunks
-      audio.src = ""; // Clear the audio element source
     });
+}
+
+function resetRecordingState() {
+  audioBlob = null; // Clear the audio content
+  chunks = []; // Clear the recorded chunks
+  audio.src = ""; // Clear the audio element source
+  console.log("Recording state has been reset.");
 }
 
 function toggleRecording() {

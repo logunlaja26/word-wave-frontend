@@ -40,18 +40,22 @@
 
     <main id="main" style="display: none">
       <div class="controls" id="controls-class">
-        <button id="notes-btn" class="button">NOTES</button>
-        <button id="logout-btn" class="button">LOGOUT</button>
-        <button id="contact-btn" class="button">CONTACT</button>
-        <button id="instructions-btn" class="button">INSTRUCTIONS</button>
+        <div class="button-group">
+          <button id="notes-btn" class="button">NOTES</button>
+          <button id="logout-btn" class="button">LOGOUT</button>
+          <button id="contact-btn" class="button">CONTACT</button>
+          <button id="instructions-btn" class="button">INSTRUCTIONS</button>
+        </div>
         <i
           class="fa fa-microphone microphone"
           id="record"
-          style="font-size: 48px; color: red"></i>
-        <button id="playButton" class="button-19" role="button" disabled>
-          Play
-        </button>
-        <button id="stopButton" class="button-19" role="button">Stop</button>
+          style="font-size: 72px"></i>
+        <div class="button-group">
+          <button id="playButton" class="button-19" role="button" disabled>
+            Play
+          </button>
+          <button id="stopButton" class="button-19" role="button">Stop</button>
+        </div>
         <div class="base-timer" id="timer">
           <svg
             class="base-timer__svg"
@@ -61,23 +65,20 @@
               <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45" />
             </g>
           </svg>
-          <span>
-            <!-- Remaining time label -->
-          </span>
+          <span><!-- Remaining time label --></span>
         </div>
-
-          <audio id="audio" src=""></audio>
-        </div>
-        <div id="spinner" style="display: none">
-          <i class="fa fa-spinner fa-spin spinner"></i>
-        </div>
-        <button
-          id="transcribe-btn-19"
-          role="button"
-          class="button-19 button19-disabled" disabled>
-          Transcribe
-        </button>
+        <audio id="audio" src=""></audio>
       </div>
+      <div id="spinner" style="display: none">
+        <i class="fa fa-spinner fa-spin spinner"></i>
+      </div>
+      <button
+        id="transcribe-btn-19"
+        role="button"
+        class="button-19 button19-disabled"
+        disabled>
+        Transcribe
+      </button>
       <div class="output-container">
         <div class="output">
           <p id="text">Press the button and start speaking...</p>

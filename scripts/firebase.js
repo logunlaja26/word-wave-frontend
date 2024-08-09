@@ -13,7 +13,7 @@ console.log("db instance ", db);
 
 const storage = getStorage(app);
 
-const storageRef = ref(storage, `audio/${audioFilename}`);
+//const storageRef = ref(storage, `audio/${audioFilename}`);
 const audioListRef = ref(storage, "audio/");
 
 export let currentUserId = null;
@@ -34,10 +34,12 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // Function to upload audio
-export async function uploadAudioToFirebase(audioBlob) {
-  const audioFile = new File([audioBlob], "audio.mp3", {
+export async function uploadAudioToFirebase(audioBlob, audioFilename) {
+  const audioFile = new File([audioBlob], audioFilename, {
     type: "audio/mpeg",
   });
+
+  const storageRef = ref(storage, `audio/${audioFilename}`);
 
   try {
     const snapshot = await uploadBytes(storageRef, audioFile);
