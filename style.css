@@ -153,7 +153,6 @@ button:active:not(.button-disabled) {
 }
 
 .spinner {
-  font-size: 48px;
   color: var(--primary-color);
 }
 

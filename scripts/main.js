@@ -84,7 +84,6 @@ function startRecording() {
   record.classList.add("animate");
   transcribeBtn19.classList.add("button19-disabled");
   transcribeBtn19.disabled = true; // Disable the button for interactions
-  spinner.style.display = "block";
 
   //stopButton.disabled = false;
   playButton.disabled = true;
@@ -102,8 +101,6 @@ function stopRecording() {
   record.classList.remove("animate");
   transcribeBtn19.classList.remove("button19-disabled");
   transcribeBtn19.disabled = false; // Enable the button for interactions
-  spinner.style.display = "none";
-
   //stopButton.disabled = true;
   playButton.disabled = false;
 }
@@ -125,6 +122,7 @@ export const newNoteId = "note-" + uuidv4(); // Generate a new note ID
 function uploadAudioAndSaveData() {
   transcribeBtn19.disabled = true; // Disable the button to prevent multiple clicks
   transcribeBtn19.classList.add("button19-disabled");
+  spinner.style.display = "block";
   //const newNoteId = "note-" + uuidv4(); // Generate a new note ID
   const audioFilename = "audio-" + uuidv4() + "-file.mp3";
   console.log("audio file name..", audioFilename);
@@ -138,6 +136,7 @@ function uploadAudioAndSaveData() {
     })
     .finally(() => {
       resetRecordingState(); // Reset the recording state
+      spinner.style.display = "none";
       transcribeBtn19.disabled = false; // Re-enable the button after the response is received
       transcribeBtn19.classList.remove("button19-disabled");
     });
